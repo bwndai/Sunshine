@@ -1,9 +1,11 @@
 package com.example.debra.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -37,6 +39,7 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
     private ArrayAdapter<String> mForecastAdapter;
+    //private String defaultLoc;
 
     public ForecastFragment() {
     }
@@ -44,6 +47,7 @@ public class ForecastFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -227,7 +231,11 @@ public class ForecastFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            new FetchWeatherTask().execute("32792");
+            //String loc = SettingsActivity.class.get
+            SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String location = preference.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+            Log.v("Location Settings", location);
+            new FetchWeatherTask().execute(location);
             return true;
         }
 

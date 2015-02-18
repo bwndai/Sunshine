@@ -1,5 +1,6 @@
 package com.example.debra.sunshine.app;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -64,6 +66,17 @@ public class ForecastFragment extends Fragment {
         ListView listview = (ListView) rootView.findViewById(R.id.listview_forecast);
         listview.setAdapter(mForecastAdapter);
         //String query = "http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7";
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(getActivity(),mForecastAdapter.getItem(position) ,Toast.LENGTH_LONG).show();
+                //explicit intent, open another activity to display the weather detail
+                String forecast = mForecastAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }
@@ -81,7 +94,8 @@ public class ForecastFragment extends Fragment {
 
             @Override
             protected void onPostExecute(String[] strings) {
-                mForecastAdapter.clear();
+                if (strings != null)
+                    mForecastAdapter.clear();
                 mForecastAdapter.addAll(new ArrayList<String> (Arrays.asList(strings)) );
                 super.onPostExecute(strings);
             }
@@ -110,7 +124,7 @@ public class ForecastFragment extends Fragment {
                 int julianStartDay = Time.getJulianDay(System.currentTimeMillis(), dayTime.gmtoff);
                 dayTime = new Time();
                 String[] resultStrs = new String[numDays];
-                for (int i = 0; i < weatherArray.length(); i++){
+                for (int i = 0; i < weatherArray.length(); i++) {
                     String day;
                     String description;
                     String highAndLow;
@@ -129,8 +143,6 @@ public class ForecastFragment extends Fragment {
                     highAndLow = formatHighLows(high, low);
                     resultStrs[i] = day + " - " + description + " - " + highAndLow;
                 }
-                for (String s: resultStrs)
-                    Log.v(LOG_TAG, "Forecast entry: " + s);
 
                 return resultStrs;
             }
@@ -176,7 +188,6 @@ public class ForecastFragment extends Fragment {
                         //return null;
                         forecastJsonStr = null;
                     forecastJsonStr = buffer.toString();
-                    Log.v(LOG_TAG, "Forecast JSON string:" + forecastJsonStr);
                 } catch (IOException e){
                     Log.e("PlaceholderFragment", "Error", e);
                     return null;

@@ -31,6 +31,7 @@ public class SettingsActivity extends PreferenceActivity
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         addPreferencesFromResource(R.xml.pref_general);
+        //for each preference we need to bind them
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
     }

@@ -18,8 +18,6 @@ package com.example.debra.sunshine.app.data;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.example.debra.sunshine.app.data.WeatherContract;
-
 /*
     Students: This is NOT a complete test for the WeatherContract --- just for the functions
     that we expect you to write.
@@ -42,6 +40,6 @@ public class TestWeatherContract extends AndroidTestCase {
                 TEST_WEATHER_LOCATION, locationUri.getLastPathSegment());
         assertEquals("Error: Weather location Uri doesn't match our expected result",
                 locationUri.toString(),
-                "content://com.example.android.sunshine.app/weather/%2FNorth%20Pole");
+                "content://com.example.debra.sunshine.app/weather/%2FNorth%20Pole");
     }
 }

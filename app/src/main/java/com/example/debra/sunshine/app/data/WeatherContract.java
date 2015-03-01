@@ -71,6 +71,8 @@ public class WeatherContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_LOCATION;
 
         public static Uri buildLocationUri(long id){
+            //content://authority/path/id
+            //I guess id is the row number returned by insertion function???
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
